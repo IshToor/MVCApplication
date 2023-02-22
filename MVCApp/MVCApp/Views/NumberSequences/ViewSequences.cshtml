@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MVCApp.Models.SortedDataModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <title>
+        Sequences
+    </title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SortedNumberSequence)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SortType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeElapsed)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SortedNumberSequence)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SortType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeElapsed)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="las la-info-circle  la-2x"></i></a>
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id"><i class="las la-trash-alt  la-2x"></i></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="ExportAllSequences">Export all</a>
+</p>

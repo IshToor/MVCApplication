@@ -1,0 +1,38 @@
+@model MVCApp.Models.SortedDataModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+<div>
+    <h4>SortedDataModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SortedNumberSequence)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SortedNumberSequence)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SortType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SortType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeElapsed)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeElapsed)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="ViewSequences">Back to List</a>
+    </form>
+</div>

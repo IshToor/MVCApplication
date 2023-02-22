@@ -1,0 +1,52 @@
+@model FormNumberInputModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1>Enter a number!</h1>
+    <form asp-action="SubmitNumber">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <input asp-for="CurrentNumber"/>
+        </div>
+        <br>
+        <span asp-validation-for="CurrentNumber" class="text-danger"></span>
+        <div class="form-group">
+            <input type="submit" value="Add Number" class="btn btn-primary"/>
+        </div>
+    </form>
+    <div>
+        <br>
+        <h2>Entered Numbers: </h2>
+        <div>
+            @if (Context.Request.Cookies.TryGetValue("NumberCookie", out var cookieValue))
+            {
+                <h3>@cookieValue</h3>
+            }
+        </div>
+    </div>
+    <br>
+    <form asp-controller="NumberSequences" asp-action="SubmitAll" method="post">
+        <h2>Sort Type:</h2>
+        <select asp-for="SortType">
+            <option value="Ascending">Ascending</option>
+            <option value="Descending">Descending</option>
+        </select>
+        <br>
+        <br>
+        <br>
+        <div class="form-group">
+            <input type="submit" value="Submit Sequence" class="btn btn-primary"/>
+        </div>
+    </form>
+         <div>
+             <p style="color:green;">@ViewBag.Message</p>
+         </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
