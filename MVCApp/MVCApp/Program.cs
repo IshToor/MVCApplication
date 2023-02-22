@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MVCApp.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MVCAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TechnicalTestIshverpalToorContext") ?? throw new InvalidOperationException("Connection string 'TechnicalTestIshverpalToorContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MVCAppContext") ?? throw new InvalidOperationException("Connection string 'MVCAppContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
