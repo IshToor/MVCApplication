@@ -3,10 +3,11 @@
   <component name="EfCoreDialogsState">
     <option name="keyValueStorage">
       <map>
-        <entry key="Common:a89785fa-f857-495d-92e0-a1118f187dd1:dbContext" value="TechnicalTestIshverpalToor.Data.TechnicalTestIshverpalToorContext" />
+        <entry key="Common:a89785fa-f857-495d-92e0-a1118f187dd1:dbContext" value="MVCApp.Data.MVCAppContext" />
         <entry key="Common:buildConfiguration" value="Debug" />
         <entry key="Common:noBuild" value="false" />
         <entry key="Common:outputFolder" value="Migrations" />
+        <entry key="Common:useDefaultConnection" value="true" />
       </map>
     </option>
   </component>
