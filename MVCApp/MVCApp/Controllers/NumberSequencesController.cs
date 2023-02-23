@@ -45,13 +45,13 @@ namespace MVCApp.Controllers
         {
             if (id == null)
             {
-                ViewData["ErrorMessage"] = "Failed to delete sorted data";
+                TempData["ErrorMessage"] = "Failed to delete sorted data";
             }
 
             var sortedData = await _context.SortedDataModel.FirstOrDefaultAsync(m => m.Id == id);
             if (sortedData == null)
             {
-                ViewData["ErrorMessage"] = "Failed to delete sorted data";
+                TempData["ErrorMessage"] = "Failed to delete sorted data";
             }
 
             return View(sortedData);
@@ -62,7 +62,7 @@ namespace MVCApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var sortedData = await _context.SortedDataModel.FindAsync(id);
-
+            
             try
             {
                 if (sortedData != null) _context.SortedDataModel.Remove(sortedData);
@@ -71,23 +71,26 @@ namespace MVCApp.Controllers
             catch (DbUpdateException e)
             {
                 Console.WriteLine(e);
+                TempData["ErrorMessage"] = "Failed to delete sorted data";
             }
+            
             return RedirectToAction(nameof(ViewSequences));
         }
 
         public async Task<IActionResult> ViewSequences()
         {
+            ViewBag.Message = TempData["ErrorMessage"] ?? "";
             return View(await _context.SortedDataModel.ToListAsync());
         }
 
         [HttpGet("NumberSequences/ViewSequences/{sortType}")]
         public async Task<IActionResult> ViewSequences(string sortType, string searchString)
         {
+            ViewBag.Message = TempData["ErrorMessage"] ?? "";
             ViewData["CurrentSort"] = sortType = String.IsNullOrEmpty(sortType) ? "Ascending" : sortType;
             ViewData["CurrentFilter"] = searchString;
             var sortedSequences = from s in _context.SortedDataModel
                 select s;
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 sortedSequences = sortedSequences.Where(x => x.SortedNumberSequence != null && x.SortedNumberSequence.Contains(searchString));
@@ -99,16 +102,17 @@ namespace MVCApp.Controllers
             
             return View(await sortedSequences.AsNoTracking().ToListAsync());
         }
-        
-        public IActionResult SubmitNumber(int currentNumber)
+
+        public IActionResult SubmitNumber(float currentNumber)
         {
+            int number = (int)Math.Round(currentNumber);
             if (HttpContext.Request.Cookies.TryGetValue("NumberCookie", out var cookieValue))
             {
-                HttpContext.Response.Cookies.Append("NumberCookie", cookieValue + "," + currentNumber);
+                HttpContext.Response.Cookies.Append("NumberCookie", cookieValue + "," + number);
             }
             else
             {
-                HttpContext.Response.Cookies.Append("NumberCookie", currentNumber.ToString());
+                HttpContext.Response.Cookies.Append("NumberCookie", number.ToString());
             }
             
             return RedirectToAction(nameof(Index));
@@ -118,9 +122,9 @@ namespace MVCApp.Controllers
         public async Task<IActionResult> SubmitAll(string sortType)
         {
             if (!HttpContext.Request.Cookies.TryGetValue("NumberCookie", out var cookieValue)) return RedirectToAction(nameof(Index));
-        
-            var numberSequence = cookieValue.Split(',',StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
 
+            var numberSequence = cookieValue.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            
             var watch = new Stopwatch();
         
             watch.Start();
@@ -154,19 +158,19 @@ namespace MVCApp.Controllers
             catch (DbUpdateException e)
             {
                 Console.WriteLine(e);
+                TempData["SubmissionMessage"] = "Submission failed";
             }
 
             HttpContext.Response.Cookies.Delete("NumberCookie");
             
             return RedirectToAction(nameof(Index));
         }
-        
+
         public async Task<IActionResult> ExportAllSequences()
         {
             if (!_context.SortedDataModel.Any()) 
             {
-                //Add error message
-                ViewData["ErrorMessage"] = "No data to export";
+                TempData["ErrorMessage"] = "No data to export";
                 return RedirectToAction(nameof(ViewSequences));
             }
    

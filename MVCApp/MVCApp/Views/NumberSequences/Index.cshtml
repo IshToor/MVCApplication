@@ -42,9 +42,17 @@
             <input type="submit" value="Submit Sequence" class="btn btn-primary"/>
         </div>
     </form>
-         <div>
-             <p style="color:green;">@ViewBag.Message</p>
-         </div>
+    <div>
+        @if (ViewBag.Message == "Submission Successful")
+        {
+            <p style="color:green;">@ViewBag.Message</p>
+        }
+        else
+        {
+            <p style="color:red;">@ViewBag.Message</p>
+        }
+        
+    </div>
 </div>
 
 @section Scripts {
