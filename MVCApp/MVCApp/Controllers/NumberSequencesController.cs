@@ -105,14 +105,14 @@ namespace MVCApp.Controllers
 
         public IActionResult SubmitNumber(float currentNumber)
         {
-            int number = (int)Math.Round(currentNumber);
+            int roundedToInt = (int)Math.Round(currentNumber);
             if (HttpContext.Request.Cookies.TryGetValue("NumberCookie", out var cookieValue))
             {
-                HttpContext.Response.Cookies.Append("NumberCookie", cookieValue + "," + number);
+                HttpContext.Response.Cookies.Append("NumberCookie", cookieValue + "," + roundedToInt);
             }
             else
             {
-                HttpContext.Response.Cookies.Append("NumberCookie", number.ToString());
+                HttpContext.Response.Cookies.Append("NumberCookie", roundedToInt.ToString());
             }
             
             return RedirectToAction(nameof(Index));
